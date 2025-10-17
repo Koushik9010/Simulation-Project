@@ -1,10 +1,86 @@
-// src/components/table.jsx
+// import React, { useState } from "react";
+// import { runSimulation } from "./logic";
+// import "./table.css";
+
+// const Table = () => {
+//   const [data, setData] = useState([]);
+//   const [numCustomers, setNumCustomers] = useState(10);
+
+//   const handleSimulation = () => {
+//     const result = runSimulation(Number(numCustomers));
+//     setData(result);
+//   };
+
+//   return (
+//     <main className="main-content">
+//       <div className="controls">
+//         <label>Number of Customers:</label>
+//         <input
+//           type="number"
+//           value={numCustomers}
+//           onChange={(e) => setNumCustomers(e.target.value)}
+//           min="1"
+//         />
+//         <button onClick={handleSimulation}>Run Simulation</button>
+//       </div>
+
+//       <div className="table-container">
+//         <table className="sim-table">
+//           <thead>
+//             <tr>
+//               <th>Customer</th>
+//               <th>RV (A.T)</th>
+//               <th>IAT</th>
+//               <th>AT</th>
+//               <th>RV (S.T)</th>
+//               <th>ST</th>
+//               <th>TSB</th>
+//               <th>WT</th>
+//               <th>TSE</th>
+//               <th>TSS</th>
+//               <th>IOS</th>
+//             </tr>
+//           </thead>
+//           <tbody>
+//             {data.length > 0 ? (
+//               data.map((row) => (
+//                 <tr key={row.customer}>
+//                   <td>{row.customer}</td>
+//                   <td>{row.rvAT}</td>
+//                   <td>{row.IAT}</td>
+//                   <td>{row.AT}</td>
+//                   <td>{row.rvST}</td>
+//                   <td>{row.ST}</td>
+//                   <td>{row.TSB}</td>
+//                   <td>{row.WT}</td>
+//                   <td>{row.TSE}</td>
+//                   <td>{row.TSS}</td>
+//                   <td>{row.IOS}</td>
+//                 </tr>
+//               ))
+//             ) : (
+//               <tr>
+//                 <td colSpan="11">
+//                   No simulation data yet. Click "Run Simulation".
+//                 </td>
+//               </tr>
+//             )}
+//           </tbody>
+//         </table>
+//       </div>
+//     </main>
+//   );
+// };
+
+// export default Table;
+
 import React, { useState } from "react";
 import { runSimulation } from "./logic";
+import "./table.css";
 
 const Table = () => {
   const [data, setData] = useState([]);
-  const [numCustomers, setNumCustomers] = useState(10); // default 10
+  const [numCustomers, setNumCustomers] = useState(10);
 
   const handleSimulation = () => {
     const result = runSimulation(Number(numCustomers));
@@ -12,78 +88,64 @@ const Table = () => {
   };
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h2>Single Server Simulation Table</h2>
-
-      <div style={{ marginBottom: "10px" }}>
-        <label>
-          Number of Customers:{" "}
-          <input
-            type="number"
-            value={numCustomers}
-            onChange={(e) => setNumCustomers(e.target.value)}
-            min="1"
-            style={{ width: "80px", marginRight: "10px" }}
-          />
-        </label>
+    <main className="main-content">
+      {/* Controls are now clearly under the header */}
+      <div className="controls">
+        <label>Number of Customers:</label>
+        <input
+          type="number"
+          value={numCustomers}
+          onChange={(e) => setNumCustomers(e.target.value)}
+          min="1"
+        />
         <button onClick={handleSimulation}>Run Simulation</button>
       </div>
 
-      {data.length > 0 && (
-        <table
-          border="1"
-          cellPadding="6"
-          style={{ marginTop: "10px", borderCollapse: "collapse" }}
-        >
+      <div className="table-container">
+        <table className="sim-table">
           <thead>
             <tr>
               <th>Customer</th>
-              <th>R.V. for Arrival Time</th>
-              <th>Inter Arrival Time</th>
-              <th>Arrival Time</th>
-              <th>R.V. for Service Time</th>
-              <th>Service Time</th>
-              <th>Time Service Begins</th>
-              <th>Waiting Time</th>
-              <th>Time Service Ends</th>
-              <th>Time Spent in System</th>
-              <th>Idle Time of Server</th>
+              <th>RV (A.T)</th>
+              <th>IAT</th>
+              <th>AT</th>
+              <th>RV (S.T)</th>
+              <th>ST</th>
+              <th>TSB</th>
+              <th>WT</th>
+              <th>TSE</th>
+              <th>TSS</th>
+              <th>IOS</th>
             </tr>
           </thead>
           <tbody>
-            {data.map(
-              ({
-                customer,
-                rvAT,
-                IAT,
-                AT,
-                rvST,
-                ST,
-                TSB,
-                WT,
-                TSE,
-                TSS,
-                IOS,
-              }) => (
-                <tr key={customer}>
-                  <td>{customer}</td>
-                  <td>{rvAT}</td>
-                  <td>{IAT}</td>
-                  <td>{AT}</td>
-                  <td>{rvST}</td>
-                  <td>{ST}</td>
-                  <td>{TSB}</td>
-                  <td>{WT}</td>
-                  <td>{TSE}</td>
-                  <td>{TSS}</td>
-                  <td>{IOS}</td>
+            {data.length > 0 ? (
+              data.map((row) => (
+                <tr key={row.customer}>
+                  <td>{row.customer}</td>
+                  <td>{row.rvAT}</td>
+                  <td>{row.IAT}</td>
+                  <td>{row.AT}</td>
+                  <td>{row.rvST}</td>
+                  <td>{row.ST}</td>
+                  <td>{row.TSB}</td>
+                  <td>{row.WT}</td>
+                  <td>{row.TSE}</td>
+                  <td>{row.TSS}</td>
+                  <td>{row.IOS}</td>
                 </tr>
-              )
+              ))
+            ) : (
+              <tr>
+                <td colSpan="11">
+                  No simulation data yet. Click "Run Simulation".
+                </td>
+              </tr>
             )}
           </tbody>
         </table>
-      )}
-    </div>
+      </div>
+    </main>
   );
 };
 
