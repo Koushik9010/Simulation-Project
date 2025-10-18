@@ -44,7 +44,7 @@ export const runSimulation = (customers) => {
     const IAT = getInterArrivalTime(rvAT);
     const ST = getServiceTime(rvST);
 
-    const AT = i === 0 ? 0 : prevAT + IAT;
+    const AT = i === 0 ? IAT : prevAT + IAT;
     const TSB = i === 0 ? 0 : Math.max(prevTSE, AT);
     const WT = TSB - AT;
     const TSE = TSB + ST;
@@ -84,7 +84,7 @@ export const generateNextCustomer = (prevData = []) => {
   const prevAT = i === 0 ? 0 : prevData[i - 1].AT;
   const prevTSE = i === 0 ? 0 : prevData[i - 1].TSE;
 
-  const AT = i === 0 ? 0 : prevAT + IAT;
+  const AT = i === 0 ? IAT : prevAT + IAT;
   const TSB = i === 0 ? 0 : Math.max(prevTSE, AT);
   const WT = TSB - AT;
   const TSE = TSB + ST;

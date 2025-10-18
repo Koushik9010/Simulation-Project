@@ -38,14 +38,30 @@ const Dynamic = () => {
         <button
           onClick={startSimulation}
           disabled={isRunning}
-          style={{ backgroundColor: "#28a745" }}
+          style={{
+            backgroundColor: isRunning ? "#a5d6a7" : "#28a745", // lighter green when disabled
+            cursor: isRunning ? "not-allowed" : "pointer",
+            color: "white",
+            border: "none",
+            borderRadius: "6px",
+            padding: "8px 18px",
+            transition: "0.3s",
+          }}
         >
           Start Dynamic Simulation
         </button>
         <button
           onClick={stopSimulation}
           disabled={!isRunning}
-          style={{ backgroundColor: "#d9534f" }}
+          style={{
+            backgroundColor: !isRunning ? "#f5b6b6" : "#d9534f", // lighter red when disabled
+            cursor: !isRunning ? "not-allowed" : "pointer",
+            color: "white",
+            border: "none",
+            borderRadius: "6px",
+            padding: "8px 18px",
+            transition: "0.3s",
+          }}
         >
           Stop Dynamic Simulation
         </button>
