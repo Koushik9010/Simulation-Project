@@ -71,3 +71,37 @@ export const runSimulation = (customers) => {
 
   return data;
 };
+
+// logic for dynamic simulation
+export const generateNextCustomer = (prevData = []) => {
+  const i = prevData.length;
+  const rvAT = Math.floor(Math.random() * 1000) + 1;
+  const rvST = Math.floor(Math.random() * 100) + 1;
+
+  const IAT = getInterArrivalTime(rvAT);
+  const ST = getServiceTime(rvST);
+
+  const prevAT = i === 0 ? 0 : prevData[i - 1].AT;
+  const prevTSE = i === 0 ? 0 : prevData[i - 1].TSE;
+
+  const AT = i === 0 ? 0 : prevAT + IAT;
+  const TSB = i === 0 ? 0 : Math.max(prevTSE, AT);
+  const WT = TSB - AT;
+  const TSE = TSB + ST;
+  const TSS = WT + ST;
+  const IOS = i === 0 ? 0 : TSB - prevTSE;
+
+  return {
+    customer: i + 1,
+    rvAT,
+    IAT,
+    AT,
+    rvST,
+    ST,
+    TSB,
+    WT,
+    TSE,
+    TSS,
+    IOS,
+  };
+};

@@ -6,11 +6,45 @@
   background-color: #007acc;
   color: white;
   text-align: center;
-  padding: 2px 0;
+  padding: 8px 16px;
   font-size: 1rem;
   font-weight: 600;
   z-index: 10;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.header-title {
+  font-size: 35px;
+  text-align: center;
+  flex: 1 1 auto;
+}
+
+.dynamic-page {
+  position: absolute;
+  right: 50px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.dynamic-button {
+  display: inline-block;
+  background-color: #005f99;
+  color: white;
+  text-decoration: none;
+  padding: 8px 16px;
+  font-size: 20px;
+  border-radius: 4px;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+}
+
+.dynamic-button:hover {
+  background-color: #004d80;
+  transform: scale(1.05);
 }
 
 .footer {
@@ -21,7 +55,7 @@
   background-color: #f1f3f6;
   color: #444;
   text-align: center;
-  padding: 8px 0;
+  padding: 8px 16px;
   font-size: 0.95rem;
   border-top: 1px solid #d9d9d9;
 }
@@ -35,4 +69,72 @@
 
 .footer a:hover {
   text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .header-title {
+    font-size: 1.8rem;
+  }
+
+  .dynamic-button {
+    font-size: 0.95rem;
+    padding: 6px 12px;
+  }
+
+  .footer {
+    font-size: 0.9rem;
+    padding: 6px 12px;
+  }
+}
+
+@media (max-width: 890px) {
+  .header {
+    flex-direction: column;
+    padding: 10px 8px;
+  }
+
+  .header-title {
+    font-size: 1.5rem;
+    margin-bottom: 6px;
+  }
+
+  /* .dynamic-page {
+    margin-left: 0;
+  } */
+  .dynamic-page {
+    position: static;
+    transform: none;
+    margin-top: 6px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .dynamic-button {
+    font-size: 0.85rem;
+    padding: 6px 10px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .footer {
+    font-size: 0.85rem;
+    padding: 6px 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-title {
+    font-size: 1.2rem;
+  }
+
+  .dynamic-button {
+    font-size: 0.8rem;
+    padding: 5px 8px;
+  }
+
+  .footer {
+    font-size: 0.8rem;
+    padding: 5px 8px;
+  }
 }
