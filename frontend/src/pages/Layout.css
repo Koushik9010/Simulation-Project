@@ -30,51 +30,6 @@
   animation: floatText 3s ease-in-out infinite;
 }
 
-.dynamic-page {
-  position: absolute;
-  right: 50px;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.dynamic-button {
-  display: inline-block;
-  background-color: #005f99;
-  color: white;
-  text-decoration: none;
-  padding: 8px 16px;
-  font-size: 20px;
-  border-radius: 4px;
-  font-weight: 500;
-  transition: all 0.25s ease-in-out;
-  position: relative;
-  overflow: hidden;
-
-  /* Pulse glow animation */
-  animation: pulseGlow 2.5s infinite;
-}
-
-.dynamic-button:hover {
-  background-color: #004d80;
-  transform: scale(1.05);
-}
-
-/* Slide shimmer effect on hover */
-.dynamic-button::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: rgba(255, 255, 255, 0.25);
-  transition: left 0.5s ease;
-}
-
-.dynamic-button:hover::after {
-  left: 100%;
-}
-
 .footer {
   position: fixed;
   bottom: 0;
@@ -147,11 +102,6 @@ html {
 @media (max-width: 1024px) {
   .header-title {
     font-size: 1.8rem;
-  }
-
-  .dynamic-button {
-    font-size: 0.95rem;
-    padding: 6px 12px;
   }
 
   .footer {

@@ -12,8 +12,8 @@ const App = () => {
       <Header />
 
       <Routes>
-        <Route path="/" element={<Table />} />
-        <Route path="/dynamic" element={<Dynamic />} />
+        {/* <Route path="/" element={<Table />} /> */}
+        <Route path="/" element={<Dynamic />} />
       </Routes>
 
       <Footer />

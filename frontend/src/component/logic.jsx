@@ -20,60 +20,8 @@ const getServiceTime = (rv) => {
   return 6; // 96–100
 };
 
-// Main simulation logic
-export const runSimulation = (customers) => {
-  const data = [];
-
-  // Generate random numbers
-  const randAT = Array.from(
-    { length: customers },
-    () => Math.floor(Math.random() * 1000) + 1
-  );
-  const randST = Array.from(
-    { length: customers },
-    () => Math.floor(Math.random() * 100) + 1
-  );
-
-  let prevAT = 0;
-  let prevTSE = 0;
-
-  for (let i = 0; i < customers; i++) {
-    const rvAT = randAT[i];
-    const rvST = randST[i];
-
-    const IAT = getInterArrivalTime(rvAT);
-    const ST = getServiceTime(rvST);
-
-    const AT = i === 0 ? IAT : prevAT + IAT;
-    const TSB = i === 0 ? AT : Math.max(prevTSE, AT);
-    const WT = TSB - AT;
-    const TSE = TSB + ST;
-    const TSS = WT + ST;
-    const IOS = i === 0 ? 0 : TSB - prevTSE;
-
-    data.push({
-      customer: i + 1,
-      rvAT,
-      IAT,
-      AT,
-      rvST,
-      ST,
-      TSB,
-      WT,
-      TSE,
-      TSS,
-      IOS,
-    });
-
-    prevAT = AT;
-    prevTSE = TSE;
-  }
-
-  return data;
-};
-
 // logic for dynamic simulation
-export const generateNextCustomer = (prevData = []) => {
+export const runSimulation = (prevData = []) => {
   const i = prevData.length;
   const rvAT = Math.floor(Math.random() * 1000) + 1;
   const rvST = Math.floor(Math.random() * 100) + 1;
