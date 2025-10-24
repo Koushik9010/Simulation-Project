@@ -5,7 +5,7 @@ const Footer = () => {
   return (
     <footer className="footer">
       <p>
-        © {new Date().getFullYear()} Simulation System | Built by{" "}
+        © {new Date().getFullYear()} Simulation System | Designed & Developed by{" "}
         <a
           href="https://github.com/Koushik9010"
           target="_blank"

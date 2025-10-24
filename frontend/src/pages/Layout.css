@@ -81,18 +81,6 @@
   }
 }
 
-@keyframes pulseGlow {
-  0% {
-    box-shadow: 0 0 0 0 rgba(0, 122, 204, 0.5);
-  }
-  70% {
-    box-shadow: 0 0 0 10px rgba(0, 122, 204, 0);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(0, 122, 204, 0);
-  }
-}
-
 /* Smooth scroll behavior */
 html {
   scroll-behavior: smooth;

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { runSimulation } from "../component/logic";
+import { runSimulation, calculateSummary } from "../component/logic";
+import Table from "../component/table";
 import "../component/table.css";
 
 const Dynamic = () => {
@@ -10,7 +11,7 @@ const Dynamic = () => {
 
   const today = new Date().toISOString().split("T")[0];
 
-  // ✅ Load saved date/data
+  // Load saved data
   useEffect(() => {
     const lastDate = localStorage.getItem("lastSelectedDate");
     if (lastDate) {
@@ -20,7 +21,7 @@ const Dynamic = () => {
     }
   }, []);
 
-  // ✅ Handle date change
+  // When date changes
   useEffect(() => {
     if (!selectedDate) return;
     localStorage.setItem("lastSelectedDate", selectedDate);
@@ -29,16 +30,16 @@ const Dynamic = () => {
     setData(saved ? JSON.parse(saved) : []);
   }, [selectedDate]);
 
-  // ✅ Auto-save data
+  // Auto-save
   useEffect(() => {
     if (selectedDate)
       localStorage.setItem(`simData-${selectedDate}`, JSON.stringify(data));
   }, [data, selectedDate]);
 
-  // ✅ Start Simulation
+  // Start simulation
   const startSimulation = () => {
     if (!selectedDate) {
-      alert("Please select a date before starting the simulation!");
+      alert("Please select a date before starting!");
       return;
     }
     if (isRunning) return;
@@ -59,7 +60,7 @@ const Dynamic = () => {
     addCustomer();
   };
 
-  // ✅ Stop Simulation
+  // Stop simulation
   const stopSimulation = () => {
     setIsRunning(false);
     clearTimeout(timeRef.current);
@@ -67,7 +68,7 @@ const Dynamic = () => {
 
   useEffect(() => () => clearTimeout(timeRef.current), []);
 
-  // ✅ Download CSV
+  // Download CSV
   const downloadCSV = () => {
     if (!selectedDate || data.length === 0) {
       alert("No data available for download.");
@@ -112,47 +113,13 @@ const Dynamic = () => {
     link.click();
   };
 
-  // ✅ Derived calculations
-  const calcSummary = () => {
-    if (data.length === 0) return null;
-
-    const WT = data.map((d) => d.WT || 0);
-    const ST = data.map((d) => d.ST || 0);
-    const IAT = data.map((d) => d.IAT || 0);
-    const IOS = data.map((d) => d.IOS || 0);
-    const TSS = data.map((d) => d.TSS || 0);
-    const TSE = data.map((d) => d.TSE || 0);
-
-    const n = data.length;
-    const totalWT = WT.reduce((a, b) => a + b, 0);
-    const totalST = ST.reduce((a, b) => a + b, 0);
-    const totalIAT = IAT.reduce((a, b) => a + b, 0);
-    const totalIOS = IOS.reduce((a, b) => a + b, 0);
-    const totalTSS = TSS.reduce((a, b) => a + b, 0);
-    const waited = WT.filter((w) => w > 0).length;
-    // const lastTSS = TSS[TSS.length - 1] || 0;
-    const lastTSE = TSE[TSE.length - 1] || 0;
-
-    return {
-      avgWaitingTime: (totalWT / n).toFixed(2),
-      probWait: (waited / n).toFixed(2),
-      probIdle: lastTSE ? (totalIOS / lastTSE).toFixed(2) : "0.00",
-      avgServiceTime: (totalST / n).toFixed(2),
-      avgTimeBetweenArrival: n > 1 ? (totalIAT / (n - 1)).toFixed(2) : "0.00",
-      avgWaitingForThoseWhoWait:
-        waited > 0 ? (totalWT / waited).toFixed(2) : "0.00",
-      avgTimeInSystem: (totalTSS / n).toFixed(2),
-    };
-  };
-
-  const summary = calcSummary();
-
+  const summary = calculateSummary(data);
   const isViewingSavedData =
     selectedDate && new Date(selectedDate) < new Date(today);
 
   return (
     <main className="main-content">
-      {/* === Controls === */}
+      {/* Controls */}
       <div className="controls">
         <input
           type="date"
@@ -224,96 +191,13 @@ const Dynamic = () => {
         </button>
       </div>
 
-      {/* === Table === */}
-      <div className="table-container">
-        <table className="sim-table">
-          <thead>
-            <tr>
-              <th>Customer</th>
-              <th>RV (A.T)</th>
-              <th>IAT</th>
-              <th>AT</th>
-              <th>RV (S.T)</th>
-              <th>ST</th>
-              <th>TSB</th>
-              <th>WT</th>
-              <th>TSE</th>
-              <th>TSS</th>
-              <th>IOS</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.length > 0 ? (
-              data.map((row) => (
-                <tr key={row.customer}>
-                  <td>{row.customer}</td>
-                  <td>{row.rvAT}</td>
-                  <td>{row.IAT}</td>
-                  <td>{row.AT}</td>
-                  <td>{row.rvST}</td>
-                  <td>{row.ST}</td>
-                  <td>{row.TSB}</td>
-                  <td>{row.WT}</td>
-                  <td>{row.TSE}</td>
-                  <td>{row.TSS}</td>
-                  <td>{row.IOS}</td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="11">
-                  {selectedDate
-                    ? isViewingSavedData
-                      ? "Viewing saved data from a previous date."
-                      : "No data yet. Click 'Start Simulation' to begin."
-                    : "Select a date to start simulation."}
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
-
-      {/* === Summary === */}
-      {summary && (
-        <div
-          style={{
-            marginTop: "20px",
-            background: "#f7f7f7",
-            borderRadius: "10px",
-            padding: "15px",
-            width: "fit-content",
-            boxShadow: "0 0 5px rgba(0,0,0,0.1)",
-          }}
-        >
-          <h3 style={{ marginBottom: "10px" }}>Summary Calculations</h3>
-          <ul style={{ lineHeight: "1.8", listStyle: "none", paddingLeft: 0 }}>
-            <li>
-              1️⃣ Average Waiting Time: <b>{summary.avgWaitingTime}</b>
-            </li>
-            <li>
-              2️⃣ Probability Customer Waits: <b>{summary.probWait}</b>
-            </li>
-            <li>
-              3️⃣ Probability of Idle Time: <b>{summary.probIdle}</b>
-            </li>
-            <li>
-              4️⃣ Average Service Time: <b>{summary.avgServiceTime}</b>
-            </li>
-            <li>
-              5️⃣ Avg Time Between Arrivals:{" "}
-              <b>{summary.avgTimeBetweenArrival}</b>
-            </li>
-            <li>
-              6️⃣ Avg Wait (Only Those Who Wait):{" "}
-              <b>{summary.avgWaitingForThoseWhoWait}</b>
-            </li>
-            <li>
-              7️⃣ Avg Time in System: <b>{summary.avgTimeInSystem}</b>
-            </li>
-          </ul>
-        </div>
-      )}
+      {/* Table + Summary */}
+      <Table
+        data={data}
+        summary={summary}
+        selectedDate={selectedDate}
+        isViewingSavedData={isViewingSavedData}
+      />
     </main>
   );
 };

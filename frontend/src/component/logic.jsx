@@ -1,4 +1,4 @@
-// Inter-arrival time mapping (based on random value)
+// Inter-arrival time mapping
 const getInterArrivalTime = (rv) => {
   if (rv <= 125) return 1;
   if (rv <= 250) return 2;
@@ -10,7 +10,7 @@ const getInterArrivalTime = (rv) => {
   return 8; // 876–1000
 };
 
-// Service time mapping (based on random value)
+// Service time mapping
 const getServiceTime = (rv) => {
   if (rv <= 25) return 1;
   if (rv <= 35) return 2;
@@ -20,7 +20,7 @@ const getServiceTime = (rv) => {
   return 6; // 96–100
 };
 
-// logic for dynamic simulation
+// Simulation step logic (1 customer at a time)
 export const runSimulation = (prevData = []) => {
   const i = prevData.length;
   const rvAT = Math.floor(Math.random() * 1000) + 1;
@@ -51,5 +51,37 @@ export const runSimulation = (prevData = []) => {
     TSE,
     TSS,
     IOS,
+  };
+};
+
+// Summary calculation logic
+export const calculateSummary = (data) => {
+  if (!data || data.length === 0) return null;
+
+  const WT = data.map((d) => d.WT || 0);
+  const ST = data.map((d) => d.ST || 0);
+  const IAT = data.map((d) => d.IAT || 0);
+  const IOS = data.map((d) => d.IOS || 0);
+  const TSS = data.map((d) => d.TSS || 0);
+  const TSE = data.map((d) => d.TSE || 0);
+
+  const n = data.length;
+  const totalWT = WT.reduce((a, b) => a + b, 0);
+  const totalST = ST.reduce((a, b) => a + b, 0);
+  const totalIAT = IAT.reduce((a, b) => a + b, 0);
+  const totalIOS = IOS.reduce((a, b) => a + b, 0);
+  const totalTSS = TSS.reduce((a, b) => a + b, 0);
+  const waited = WT.filter((w) => w > 0).length;
+  const lastTSE = TSE[TSE.length - 1] || 0;
+
+  return {
+    avgWaitingTime: (totalWT / n).toFixed(2),
+    probWait: (waited / n).toFixed(2),
+    probIdle: lastTSE ? (totalIOS / lastTSE).toFixed(2) : "0.00",
+    avgServiceTime: (totalST / n).toFixed(2),
+    avgTimeBetweenArrival: n > 1 ? (totalIAT / (n - 1)).toFixed(2) : "0.00",
+    avgWaitingForThoseWhoWait:
+      waited > 0 ? (totalWT / waited).toFixed(2) : "0.00",
+    avgTimeInSystem: (totalTSS / n).toFixed(2),
   };
 };

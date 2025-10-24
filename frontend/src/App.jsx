@@ -1,7 +1,5 @@
-import React from "react";
 import { Routes, Route } from "react-router-dom";
 import "./App.css";
-import Table from "./component/table";
 import Header from "./pages/Header";
 import Footer from "./pages/Footer";
 import Dynamic from "./pages/Dynamic";
@@ -12,7 +10,6 @@ const App = () => {
       <Header />
 
       <Routes>
-        {/* <Route path="/" element={<Table />} /> */}
         <Route path="/" element={<Dynamic />} />
       </Routes>
 
