@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import { runSimulation, calculateSummary } from "../component/logic";
-import Table from "../component/table";
-import "../component/table.css";
+import { runSimulation, calculateSummary } from "../component/Single-Server/logic";
+import Table from "../component/Single-Server/table";
+import "../component/Single-Server/table.css";
 
-const Dynamic = () => {
+const Single = () => {
   const [data, setData] = useState([]);
   const [isRunning, setIsRunning] = useState(false);
   const [selectedDate, setSelectedDate] = useState("");
@@ -105,7 +105,23 @@ const Dynamic = () => {
       ].join(",")
     );
 
-    const csvContent = [headers.join(","), ...rows].join("\n");
+    // --- Add summary data at the end ---
+    const summary = calculateSummary(data);
+    const summaryRows = summary
+      ? [
+          "",
+          "Summary Calculations:",
+          `Average Waiting Time,${summary.avgWaitingTime}`,
+          `Probability Customer Waits,${summary.probWait}`,
+          `Probability of Idle Time,${summary.probIdle}`,
+          `Average Service Time,${summary.avgServiceTime}`,
+          `Average Time Between Arrivals,${summary.avgTimeBetweenArrival}`,
+          `Average Wait (Those Who Wait),${summary.avgWaitingForThoseWhoWait}`,
+          `Average Time in System,${summary.avgTimeInSystem}`,
+        ]
+      : [];
+
+    const csvContent = [headers.join(","), ...rows, ...summaryRows].join("\n");
     const blob = new Blob([csvContent], { type: "text/csv" });
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
@@ -202,4 +218,4 @@ const Dynamic = () => {
   );
 };
 
-export default Dynamic;
+export default Single;

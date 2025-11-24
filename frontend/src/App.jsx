@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import "./App.css";
 import Header from "./pages/Header";
 import Footer from "./pages/Footer";
-import Dynamic from "./pages/Dynamic";
+import Single from "./pages/Single";
 
 const App = () => {
   return (
@@ -10,7 +10,7 @@ const App = () => {
       <Header />
 
       <Routes>
-        <Route path="/" element={<Dynamic />} />
+        <Route path="/" element={<Single />} />
       </Routes>
 
       <Footer />
