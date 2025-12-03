@@ -116,7 +116,7 @@ const Newspaper = () => {
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
               <MdAttachMoney size={24} color="#f44336" />
-              <strong>Total Lost Profit {totalDays} days:</strong> $
+              <strong>Total Lost Profit after {totalDays} days:</strong> $
               {totalLostProfit.toFixed(2)}
             </div>
           </div>
@@ -131,7 +131,7 @@ const Newspaper = () => {
           >
             <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
               <MdInventory size={24} color="#2196f3" />
-              <strong>Total Salvage {totalDays} days:</strong> $
+              <strong>Total Salvage after {totalDays} days:</strong> $
               {totalSalvage.toFixed(2)}
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>

@@ -6,7 +6,7 @@ const getNewsdayTypes = (rv) => {
 };
 
 // Demand response mapping
-const getNewsdayValue = (type, rv) => {
+const demandValue = (type, rv) => {
   // ----- POOR -----
   if (type === "Poor") {
     if (rv >= 1 && rv <= 44) return 40;
@@ -37,7 +37,7 @@ const getNewsdayValue = (type, rv) => {
     if (rv >= 94 && rv <= 100) return 100;
   }
 
-  return ""; // default
+  return "";
 };
 
 export const newspaperSimulation = (
@@ -49,18 +49,18 @@ export const newspaperSimulation = (
   const stock = Number(stockInput);
   const sellingPrice = Number(sellingPriceInput) / 100;
   const buyingPrice = Number(buyingPriceInput) / 100;
+  const cost = stock * buyingPrice;
 
   const rvType = Math.floor(Math.random() * 100) + 1; // random for news day
   const rvDemand = Math.floor(Math.random() * 100) + 1; // random for demand
 
   const newsdayType = getNewsdayTypes(rvType);
-  const demand = getNewsdayValue(newsdayType, rvDemand);
+  const demand = demandValue(newsdayType, rvDemand);
 
   const revenue = demand * sellingPrice;
   const lostProfit = demand > stock ? (demand - stock) * (17 / 100) : 0;
   const salvage = demand < stock ? (stock - demand) * (5 / 100) : 0;
-  const dailyProfit = revenue - stock * buyingPrice - lostProfit + salvage;
-  const cost = stock * buyingPrice;
+  const dailyProfit = revenue - cost - lostProfit + salvage;
 
   return {
     day,
