@@ -13,21 +13,25 @@ const Newspaper = () => {
   const [stock, setStock] = useState("");
   const [buyingPrice, setBuyingPrice] = useState("");
   const [sellingPrice, setSellingPrice] = useState("");
+  const [days, setDays] = useState("");
 
   const handleSimulateDay = () => {
     if (!stock || !buyingPrice || !sellingPrice) {
-      alert("Fill Stock, Buying Price & Selling Price first");
+      alert("Fill Stock, Buying Price & Selling Price & Days first");
       return;
     }
 
-    const result = newspaperSimulation(
-      stock,
-      sellingPrice,
-      buyingPrice,
-      data.length + 1
-    );
+    const dayCount = Number(days);
+    const newData = [];
 
-    setData((prev) => [...prev, result]);
+    for (let i = 1; i <= dayCount; i++) {
+      newData.push(
+        newspaperSimulation(stock, sellingPrice, buyingPrice, i)
+      );
+    }
+    
+    // setData((prev) => [...prev, ...newData]);
+    setData(newData)
   };
 
   // --- Summary calculations ---
@@ -68,8 +72,16 @@ const Newspaper = () => {
           onChange={(e) => setSellingPrice(e.target.value)}
           style={inputStyle}
         />
+        <input
+          type="number"
+          placeholder="Days"
+          value={days}
+          onChange={(e) => setDays(e.target.value)}
+          style={inputStyle}
+        />
+
         <button onClick={handleSimulateDay} style={buttonStyle}>
-          Simulate Day
+          Generate
         </button>
       </div>
 
