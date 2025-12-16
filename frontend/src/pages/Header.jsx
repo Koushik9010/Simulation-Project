@@ -12,7 +12,7 @@ const Header = () => {
     switch (location.pathname) {
       case "/newspaper":
         return "Newspaper Simulation System";
-      case "/two-server":
+      case "/able-baker":
         return "2-Server Simulation System";
       case "/":
         return "Single Server Simulation System";
@@ -52,7 +52,7 @@ const Header = () => {
 
             <div
               className="dropdown-item"
-              onClick={() => handleNavigation("/two-server")}
+              onClick={() => handleNavigation("/able-baker")}
             >
               2-Server Simulation
             </div>
